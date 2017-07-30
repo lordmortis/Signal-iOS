@@ -1,132 +1,167 @@
 PODS:
-  - 25519 (2.0.1)
-  - AFNetworking (2.5.4):
-    - AFNetworking/NSURLConnection (= 2.5.4)
-    - AFNetworking/NSURLSession (= 2.5.4)
-    - AFNetworking/Reachability (= 2.5.4)
-    - AFNetworking/Security (= 2.5.4)
-    - AFNetworking/Serialization (= 2.5.4)
-    - AFNetworking/UIKit (= 2.5.4)
-  - AFNetworking/NSURLConnection (2.5.4):
+  - 25519 (2.0.2)
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.4):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.4)
-  - AFNetworking/Security (2.5.4)
-  - AFNetworking/Serialization (2.5.4)
-  - AFNetworking/UIKit (2.5.4):
-    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - APDropDownNavToolbar (1.1)
-  - AxolotlKit (0.7):
+  - ATAppUpdater (2.0)
+  - AxolotlKit (0.8.1):
     - 25519 (~> 2.0.1)
+    - CocoaLumberjack
     - HKDFKit (~> 0.0.3)
     - ProtocolBuffers (~> 1.9.8)
-  - CocoaLumberjack (1.9.2):
-    - CocoaLumberjack/Extensions (= 1.9.2)
-  - CocoaLumberjack/Core (1.9.2)
-  - CocoaLumberjack/Extensions (1.9.2):
+  - CocoaLumberjack (2.4.0):
+    - CocoaLumberjack/Default (= 2.4.0)
+    - CocoaLumberjack/Extensions (= 2.4.0)
+  - CocoaLumberjack/Core (2.4.0)
+  - CocoaLumberjack/Default (2.4.0):
     - CocoaLumberjack/Core
-  - DJWActionSheet (1.0.4)
-  - FFCircularProgressView (0.5)
+  - CocoaLumberjack/Extensions (2.4.0):
+    - CocoaLumberjack/Default
   - HKDFKit (0.0.3)
-  - JSQMessagesViewController (7.1.0):
+  - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - libPhoneNumber-iOS (0.8.5)
-  - Mantle (2.0.2):
-    - Mantle/extobjc (= 2.0.2)
-  - Mantle/extobjc (2.0.2)
-  - OpenSSL (1.0.203)
-  - PastelogKit (1.2):
-    - CocoaLumberjack (~> 1.9)
-  - ProtocolBuffers (1.9.8)
-  - SCWaveformView (1.0.0)
-  - SocketRocket (0.3.1-beta2)
-  - SQLCipher/common (3.1.0)
-  - SQLCipher/fts (3.1.0):
+  - libPhoneNumber-iOS (0.9.10)
+  - Mantle (2.1.0):
+    - Mantle/extobjc (= 2.1.0)
+  - Mantle/extobjc (2.1.0)
+  - ProtocolBuffers (1.9.11)
+  - PureLayout (3.0.2)
+  - Reachability (3.2)
+  - SAMKeychain (1.5.2)
+  - SignalServiceKit (0.9.0):
+    - '25519'
+    - AFNetworking
+    - AxolotlKit
+    - CocoaLumberjack
+    - libPhoneNumber-iOS
+    - Mantle
+    - Reachability
+    - SAMKeychain
+    - SocketRocket
+    - TwistedOakCollapsingFutures
+    - YapDatabase/SQLCipher (~> 2.9.3)
+  - SocketRocket (0.5.1)
+  - SQLCipher/common (3.4.1)
+  - SQLCipher/fts (3.4.1):
     - SQLCipher/common
-  - SSKeychain (1.2.3)
   - TwistedOakCollapsingFutures (1.0.0):
     - UnionFind (~> 1.0)
-  - UICKeyChainStore (1.0.7)
   - UnionFind (1.0.1)
-  - YapDatabase/SQLCipher (2.6.4):
-    - CocoaLumberjack (~> 1)
+  - YapDatabase/SQLCipher (2.9.3):
+    - YapDatabase/SQLCipher/Core (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions (= 2.9.3)
+  - YapDatabase/SQLCipher/Core (2.9.3):
+    - CocoaLumberjack (~> 2)
     - SQLCipher/fts
+  - YapDatabase/SQLCipher/Extensions (2.9.3):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/ActionManager (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/CloudKit (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/ConnectionProxy (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/CrossProcessNotification (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/FilteredViews (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/FullTextSearch (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/Hooks (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/Relationships (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/RTreeIndex (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/SearchResults (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/SecondaryIndex (= 2.9.3)
+    - YapDatabase/SQLCipher/Extensions/Views (= 2.9.3)
+  - YapDatabase/SQLCipher/Extensions/ActionManager (2.9.3):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/Views
+  - YapDatabase/SQLCipher/Extensions/CloudKit (2.9.3):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/ConnectionProxy (2.9.3):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/CrossProcessNotification (2.9.3):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/FilteredViews (2.9.3):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/Views
+  - YapDatabase/SQLCipher/Extensions/FullTextSearch (2.9.3):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/Hooks (2.9.3):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/Relationships (2.9.3):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/RTreeIndex (2.9.3):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/SearchResults (2.9.3):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/FullTextSearch
+    - YapDatabase/SQLCipher/Extensions/Views
+  - YapDatabase/SQLCipher/Extensions/SecondaryIndex (2.9.3):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/Views (2.9.3):
+    - YapDatabase/SQLCipher/Core
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.5.3)
-  - APDropDownNavToolbar (from `https://github.com/corbett/APDropDownNavToolbar.git`,
-    branch `master`)
-  - AxolotlKit (~> 0.7)
-  - DJWActionSheet
-  - FFCircularProgressView (>= 0.1)
-  - JSQMessagesViewController (from `https://github.com/WhisperSystems/JSQMessagesViewController`,
-    commit `e5582fef8a6b3e35f8070361ef37237222da712b`)
-  - libPhoneNumber-iOS (~> 0.8.5)
-  - Mantle (~> 2.0.2)
-  - OpenSSL (~> 1.0.203)
-  - PastelogKit (~> 1.2)
-  - SCWaveformView (~> 1.0)
-  - SocketRocket (from `https://github.com/FredericJacobs/SocketRocket.git`, commit
-    `f1567f1be7ce49ecf2c9d284ead8ea7c422ee99b`)
-  - SSKeychain
-  - TwistedOakCollapsingFutures (~> 1.0)
-  - UICKeyChainStore (from `Podspecs/UICKeyChainStore.podspec`)
-  - YapDatabase/SQLCipher (~> 2.6.4)
+  - ATAppUpdater
+  - AxolotlKit (from `https://github.com/WhisperSystems/SignalProtocolKit.git`)
+  - JSQMessagesViewController (from `https://github.com/WhisperSystems/JSQMessagesViewController.git`, branch `signal-master`)
+  - PureLayout
+  - Reachability
+  - SignalServiceKit (from `.`)
+  - SocketRocket (from `https://github.com/facebook/SocketRocket.git`)
 
 EXTERNAL SOURCES:
-  APDropDownNavToolbar:
-    :branch: master
-    :git: https://github.com/corbett/APDropDownNavToolbar.git
+  AxolotlKit:
+    :git: https://github.com/WhisperSystems/SignalProtocolKit.git
   JSQMessagesViewController:
-    :commit: e5582fef8a6b3e35f8070361ef37237222da712b
-    :git: https://github.com/WhisperSystems/JSQMessagesViewController
+    :branch: signal-master
+    :git: https://github.com/WhisperSystems/JSQMessagesViewController.git
+  SignalServiceKit:
+    :path: .
   SocketRocket:
-    :commit: f1567f1be7ce49ecf2c9d284ead8ea7c422ee99b
-    :git: https://github.com/FredericJacobs/SocketRocket.git
-  UICKeyChainStore:
-    :podspec: Podspecs/UICKeyChainStore.podspec
+    :git: https://github.com/facebook/SocketRocket.git
 
 CHECKOUT OPTIONS:
-  APDropDownNavToolbar:
-    :commit: 98a606b343c0ccc6cca1cd243b296325716f21e7
-    :git: https://github.com/corbett/APDropDownNavToolbar.git
+  AxolotlKit:
+    :commit: 28afe5c1dbcfdea73d147e464c53d191d1e3ea50
+    :git: https://github.com/WhisperSystems/SignalProtocolKit.git
   JSQMessagesViewController:
-    :commit: e5582fef8a6b3e35f8070361ef37237222da712b
-    :git: https://github.com/WhisperSystems/JSQMessagesViewController
+    :commit: 560e59f8e4f35612c20d6d9387d1d81789f74b0f
+    :git: https://github.com/WhisperSystems/JSQMessagesViewController.git
   SocketRocket:
-    :commit: f1567f1be7ce49ecf2c9d284ead8ea7c422ee99b
-    :git: https://github.com/FredericJacobs/SocketRocket.git
+    :commit: 877ac7438be3ad0b45ef5ca3969574e4b97112bf
+    :git: https://github.com/facebook/SocketRocket.git
 
 SPEC CHECKSUMS:
-  '25519': cd3f6f0658ac9dd4f95d7fb906378e1d0649c46c
-  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  APDropDownNavToolbar: 5d0c3f363208543d20e86ddb4630927c28cdfd4b
-  AxolotlKit: 8652fca51f4bc8225cbda791b0026c21e912b694
-  CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
-  DJWActionSheet: 2fe54b1298a7f0fe44462233752c76a530e0cd80
-  FFCircularProgressView: 683a4ab1e1bd613246a3dffa61503ffdebcde8d8
+  '25519': dc4bad7e2dbcbf1efa121068a705a44cd98c80fc
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  ATAppUpdater: a9f7027060959d47e58733d3b48f6b9a28cb8de1
+  AxolotlKit: a9530d6835baae0f204b1f6b9dd79b7901176f0d
+  CocoaLumberjack: aa9dcab71bdf9eaf2a63bbd9ddc87863efe45457
   HKDFKit: c058305d6f64b84f28c50bd7aa89574625bcb62a
-  JSQMessagesViewController: ca11f86fa68ca70835f05e169df9244147c1dc40
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  libPhoneNumber-iOS: b8ccd23576379caca37c7cbdd554addf384459ed
-  Mantle: 967fd31ea0220890b2e76589198996b534bb3fb1
-  OpenSSL: 65f5de70414ee909cea517ded684d8ef855b02b4
-  PastelogKit: c73795b8c0bbf33ea45d3b6a5eabb373be3d5955
-  ProtocolBuffers: 9a4a171c0c7cc8f21dd29aeca4f9ac775d84a880
-  SCWaveformView: 52a96750255d817e300565a80c81fb643e233e07
-  SocketRocket: 70df1983148525857ced17c57207bfb939bc6b8e
-  SQLCipher: c44fcca49c31483c2489cfb79aa7a69407f3794a
-  SSKeychain: 3f42991739c6c60a9cf1bbd4dff6c0d3694bcf3d
+  libPhoneNumber-iOS: f721ae4d5854bce60934f9fb9b0b28e8e68913cb
+  Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
+  ProtocolBuffers: d509225eb2ea43d9582a59e94348fcf86e2abd65
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  SAMKeychain: 1865333198217411f35327e8da61b43de79b635b
+  SignalServiceKit: db63e60f9a9f851e9ae48214bee230be92bb7e57
+  SocketRocket: dbb1554b8fc288ef8ef370d6285aeca7361be31e
+  SQLCipher: 43d12c0eb9c57fb438749618fc3ce0065509a559
   TwistedOakCollapsingFutures: f359b90f203e9ab13dfb92c9ff41842a7fe1cd0c
-  UICKeyChainStore: d4c0f4e313d67b2f23b6614adca55351accac15a
   UnionFind: c33be5adb12983981d6e827ea94fc7f9e370f52d
-  YapDatabase: f9051e178a38f48d0f3a78562423a5bc969f1ca3
+  YapDatabase: cd911121580ff16675f65ad742a9eb0ab4d9e266
 
-COCOAPODS: 0.37.2
+PODFILE CHECKSUM: 13b48854ce4b92e887ffb55d72029fe49b45a789
+
+COCOAPODS: 1.2.1

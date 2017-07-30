@@ -1,11 +1,14 @@
+//
+//  Copyright (c) 2017 Open Whisper Systems. All rights reserved.
+//
+
 #import <UIKit/UIKit.h>
 
 #import "SignalsViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate> 
+extern NSString *const AppDelegateStoryboardMain;
 
-@property (strong, nonatomic) UIWindow *window;
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) SignalsViewController *signalVC;
 
 @end

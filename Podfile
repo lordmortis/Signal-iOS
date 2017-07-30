@@ -1,23 +1,45 @@
-platform :ios, '7.0'
+platform :ios, '8.0'
 source 'https://github.com/CocoaPods/Specs.git'
-inhibit_all_warnings!
 
-link_with ["Signal", "SignalTests"]
+target 'Signal' do
+    pod 'ATAppUpdater'
+    pod 'AxolotlKit',                 git: 'https://github.com/WhisperSystems/SignalProtocolKit.git'
+    #pod 'AxolotlKit',                 path: '../SignalProtocolKit'
+    pod 'JSQMessagesViewController',  git: 'https://github.com/WhisperSystems/JSQMessagesViewController.git', branch: 'signal-master'
+    #pod 'JSQMessagesViewController',   path: '../JSQMessagesViewController'
+    pod 'PureLayout'
+    pod 'Reachability'
+    pod 'SignalServiceKit',           path: '.'
+    pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git'
+    target 'SignalTests' do
+      inherit! :search_paths
+    end
 
-pod 'OpenSSL',                    '~> 1.0.203'
-pod 'libPhoneNumber-iOS',         '~> 0.8.5'
-pod 'AxolotlKit',                 '~> 0.7'
-pod 'PastelogKit',                '~> 1.2'
-pod 'TwistedOakCollapsingFutures','~> 1.0'
-pod 'AFNetworking',               '~> 2.5.3'
-pod 'Mantle',                     '~> 2.0.2'
-pod 'FFCircularProgressView',     '>= 0.1'
-pod 'SCWaveformView',             '~> 1.0'
-pod 'YapDatabase/SQLCipher',      '~> 2.6.4'
-pod 'SSKeychain'     
-pod 'DJWActionSheet'
+    post_install do |installer|
+      # Disable some asserts when building for tests
+      set_building_for_tests_config(installer, 'SignalServiceKit')
+    end
+end
 
-pod 'SocketRocket',               :git => 'https://github.com/FredericJacobs/SocketRocket.git', :commit => 'f1567f1be7ce49ecf2c9d284ead8ea7c422ee99b'
-pod 'JSQMessagesViewController',  :git => 'https://github.com/WhisperSystems/JSQMessagesViewController', :commit => 'e5582fef8a6b3e35f8070361ef37237222da712b'
-pod 'APDropDownNavToolbar',       :git => 'https://github.com/corbett/APDropDownNavToolbar.git', :branch => 'master'
-pod 'UICKeyChainStore',           :podspec => 'Podspecs/UICKeyChainStore.podspec'
+# There are some asserts and debug checks that make testing difficult - e.g. Singleton asserts
+def set_building_for_tests_config(installer, target_name)
+  target = installer.pods_project.targets.detect { |target| target.to_s == target_name }
+  if target == nil
+    throw "failed to find target: #{target_name}"
+  end
+
+  build_config_name = "Test"
+  build_config = target.build_configurations.detect { |config| config.to_s == build_config_name }
+  if build_config == nil
+    throw "failed to find config: #{build_config_name} for target: #{target_name}"
+  end
+
+  puts "--[!] Disabling singleton enforcement for target: #{target} in config: #{build_config}"
+  existing_definitions = build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS']
+
+  if existing_definitions == nil || existing.length == 0
+    existing_definitions = "$(inheritied)"
+  end
+  build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "#{existing_definitions} POD_CONFIGURATION_TEST=1 COCOAPODS=1 SSK_BUILDING_FOR_TESTS=1"
+end
+

@@ -1,79 +1,186 @@
+//
+//  Copyright (c) 2017 Open Whisper Systems. All rights reserved.
+//
+
 #import "ContactTableViewCell.h"
-#import "UIUtil.h"
-
 #import "Environment.h"
-#import "PhoneManager.h"
-#import "DJWActionSheet+OWS.h"
+#import "OWSContactAvatarBuilder.h"
+#import "OWSContactsManager.h"
+#import "Signal-Swift.h"
+#import "UIFont+OWS.h"
+#import "UIUtil.h"
+#import "UIView+OWS.h"
+#import <SignalServiceKit/SignalAccount.h>
+#import <SignalServiceKit/TSGroupThread.h>
+#import <SignalServiceKit/TSThread.h>
 
-#define CONTACT_TABLE_CELL_BORDER_WIDTH 1.0f
+NS_ASSUME_NONNULL_BEGIN
 
-@interface ContactTableViewCell() {
-    
-}
-@property(strong,nonatomic) Contact* associatedContact;
+NSString *const kContactsTable_CellReuseIdentifier = @"kContactsTable_CellReuseIdentifier";
+const NSUInteger kContactTableViewCellAvatarSize = 40;
+
+@interface ContactTableViewCell ()
+
+@property (nonatomic) IBOutlet UILabel *nameLabel;
+@property (nonatomic) IBOutlet UIImageView *avatarView;
+@property (nonatomic, nullable) UILabel *subtitle;
+
 @end
 
 @implementation ContactTableViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+- (instancetype)init
+{
+    if (self = [super init]) {
+        [self configureProgrammatically];
+    }
     return self;
 }
 
-- (NSString *)reuseIdentifier {
++ (nullable NSString *)reuseIdentifier
+{
     return NSStringFromClass(self.class);
 }
 
-
-- (void)configureWithContact:(Contact *)contact {
-    _callButton.hidden =  !contact.isRedPhoneContact;
-    if(!contact.isTextSecureContact) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    _associatedContact = contact;
-    
-    _nameLabel.attributedText = [self attributedStringForContact:contact];
-    if (!contact.isTextSecureContact) {
-        _nameLabel.textColor = [UIColor lightGrayColor];
-    }
-}
-
-- (NSAttributedString *)attributedStringForContact:(Contact *)contact {
-    NSMutableAttributedString *fullNameAttributedString = [[NSMutableAttributedString alloc] initWithString:contact.fullName];
-
-    UIFont *firstNameFont;
-    UIFont *lastNameFont;
-    
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        firstNameFont = [UIFont ows_mediumFontWithSize:_nameLabel.font.pointSize];
-        lastNameFont  = [UIFont ows_regularFontWithSize:_nameLabel.font.pointSize];
-    }
-    else {
-        firstNameFont = [UIFont ows_regularFontWithSize:_nameLabel.font.pointSize];
-        lastNameFont  = [UIFont ows_mediumFontWithSize:_nameLabel.font.pointSize];
-    }
-    [fullNameAttributedString addAttribute:NSFontAttributeName value:firstNameFont range:NSMakeRange(0, contact.firstName.length)];
-    [fullNameAttributedString addAttribute:NSFontAttributeName value:lastNameFont range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
-    [fullNameAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, contact.fullName.length)];
-    
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor ows_darkGrayColor] range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
-    }
-    else {
-        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor ows_darkGrayColor] range:NSMakeRange(0, contact.firstName.length)];
-    }
-    return fullNameAttributedString;
-}
-
--(IBAction)callContact:(id)sender
+- (nullable NSString *)reuseIdentifier
 {
-    if (_associatedContact.isRedPhoneContact) {
-        NSArray *redPhoneIdentifiers = [_associatedContact redPhoneIdentifiers];
-        [Environment.phoneManager initiateOutgoingCallToContact:_associatedContact atRemoteNumber:[redPhoneIdentifiers firstObject]];
-    } else{
-        DDLogWarn(@"Tried to intiate a call but contact has no RedPhone identifier");
-    }
+    return NSStringFromClass(self.class);
 }
 
++ (CGFloat)rowHeight
+{
+    return 59.f;
+}
+
+- (void)configureProgrammatically
+{
+    self.preservesSuperviewLayoutMargins = YES;
+    self.contentView.preservesSuperviewLayoutMargins = YES;
+
+    _avatarView = [AvatarImageView new];
+    [self.contentView addSubview:_avatarView];
+
+    _nameLabel = [UILabel new];
+    _nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    _nameLabel.font = [UIFont ows_dynamicTypeBodyFont];
+    [self.contentView addSubview:_nameLabel];
+
+    [_avatarView autoVCenterInSuperview];
+    [_avatarView autoPinLeadingToSuperView];
+    [_avatarView autoSetDimension:ALDimensionWidth toSize:kContactTableViewCellAvatarSize];
+    [_avatarView autoSetDimension:ALDimensionHeight toSize:kContactTableViewCellAvatarSize];
+
+    [_nameLabel autoVCenterInSuperview];
+    [_nameLabel autoPinLeadingToTrailingOfView:_avatarView margin:12.f];
+    [_nameLabel autoPinTrailingToSuperView];
+
+    // Force layout, since imageView isn't being initally rendered on App Store optimized build.
+    [self layoutSubviews];
+}
+
+- (void)configureWithSignalAccount:(SignalAccount *)signalAccount contactsManager:(OWSContactsManager *)contactsManager
+{
+    [self configureWithRecipientId:signalAccount.recipientId
+                        avatarName:signalAccount.contact.fullName
+                       displayName:[contactsManager formattedDisplayNameForSignalAccount:signalAccount
+                                                                                    font:self.nameLabel.font]
+                   contactsManager:contactsManager];
+}
+
+- (void)configureWithRecipientId:(NSString *)recipientId contactsManager:(OWSContactsManager *)contactsManager
+{
+    [self
+        configureWithRecipientId:recipientId
+                      avatarName:@""
+                     displayName:[contactsManager formattedFullNameForRecipientId:recipientId font:self.nameLabel.font]
+                 contactsManager:contactsManager];
+}
+
+- (void)configureWithRecipientId:(NSString *)recipientId
+                      avatarName:(NSString *)avatarName
+                     displayName:(NSAttributedString *)displayName
+                 contactsManager:(OWSContactsManager *)contactsManager
+{
+    NSMutableAttributedString *attributedText = [displayName mutableCopy];
+    if (self.accessoryMessage) {
+        UILabel *blockedLabel = [[UILabel alloc] init];
+        blockedLabel.textAlignment = NSTextAlignmentRight;
+        blockedLabel.text = self.accessoryMessage;
+        blockedLabel.font = [UIFont ows_mediumFontWithSize:13.f];
+        blockedLabel.textColor = [UIColor colorWithWhite:0.5f alpha:1.f];
+        [blockedLabel sizeToFit];
+
+        self.accessoryView = blockedLabel;
+    }
+    self.nameLabel.attributedText = attributedText;
+    self.avatarView.image = [[[OWSContactAvatarBuilder alloc] initWithContactId:recipientId
+                                                                           name:avatarName
+                                                                contactsManager:contactsManager
+                                                                       diameter:kContactTableViewCellAvatarSize] build];
+
+    // Force layout, since imageView isn't being initally rendered on App Store optimized build.
+    [self layoutSubviews];
+}
+
+- (void)configureWithThread:(TSThread *)thread contactsManager:(OWSContactsManager *)contactsManager
+{
+    OWSAssert(thread);
+
+    NSString *threadName = thread.name;
+    if (threadName.length == 0 && [thread isKindOfClass:[TSGroupThread class]]) {
+        threadName = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
+    }
+
+    NSAttributedString *attributedText = [[NSAttributedString alloc]
+                                          initWithString:threadName
+                                          attributes:@{
+                                                       NSForegroundColorAttributeName : [UIColor blackColor],
+                                                       }];
+    self.nameLabel.attributedText = attributedText;
+
+    self.avatarView.image = [OWSAvatarBuilder buildImageForThread:thread
+                                                  contactsManager:contactsManager
+                                                         diameter:kContactTableViewCellAvatarSize];
+
+    // Force layout, since imageView isn't being initally rendered on App Store optimized build.
+    [self layoutSubviews];
+}
+
+- (void)addVerifiedSubtitle
+{
+    [self.subtitle removeFromSuperview];
+
+    const CGFloat kSubtitlePointSize = 10.f;
+    NSMutableAttributedString *text = [NSMutableAttributedString new];
+    // "checkmark"
+    [text appendAttributedString:[[NSAttributedString alloc]
+                                     initWithString:@"\uf00c "
+                                         attributes:@{
+                                             NSFontAttributeName : [UIFont ows_fontAwesomeFont:kSubtitlePointSize],
+                                         }]];
+    [text appendAttributedString:[[NSAttributedString alloc]
+                                     initWithString:NSLocalizedString(@"PRIVACY_IDENTITY_IS_VERIFIED_BADGE",
+                                                        @"Badge indicating that the user is verified.")]];
+    self.subtitle = [UILabel new];
+    self.subtitle.font = [UIFont ows_regularFontWithSize:kSubtitlePointSize];
+    self.subtitle.textColor = [UIColor ows_darkGrayColor];
+    self.subtitle.attributedText = text;
+    [self.subtitle sizeToFit];
+    [self.contentView addSubview:self.subtitle];
+    [self.subtitle autoPinLeadingToView:self.nameLabel];
+    [self.subtitle autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.nameLabel];
+    [self.subtitle autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+}
+
+- (void)prepareForReuse
+{
+    self.accessoryMessage = nil;
+    self.accessoryView = nil;
+    self.accessoryType = UITableViewCellAccessoryNone;
+    [self.subtitle removeFromSuperview];
+    self.subtitle = nil;
+}
 
 @end
+
+NS_ASSUME_NONNULL_END
